@@ -1,0 +1,65 @@
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Web Quiz"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Tree Quiz App"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Flask Server"
+
+[[workflows.workflow]]
+name = "Tree Quiz App"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python tree_quiz.py"
+
+[[workflows.workflow]]
+name = "Flask Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Web Quiz"
+author = 40528765
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python app.py"
+
+[deployment]
+run = ["sh", "-c", "python app.py"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
