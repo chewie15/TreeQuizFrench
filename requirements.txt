@@ -1,4 +1,1 @@
 streamlit
-pandas
-numpy
-# Ajoute d'autres dépendances ici si nécessaire
